@@ -273,7 +273,7 @@ Can be used as dependency of:
 * The main application module
 * Any Rest API Extension
 * A Java clients using the https://github.com/bonitasoft/bonita-java-client#41-bdm-typed-queries[bonita-java-client] and the Bdm typed queries
-* Integration tests, using the xref:test-toolkit:business-data#_as_a_typed_object[Bonita Test Toolkit] and the typed Business Objects.
+* Integration tests, using the xref:test-toolkit:business-data.adoc#_as_a_typed_object[Bonita Test Toolkit] and the typed Business Objects.
 
 .The generated bdm-dao-client dependency template
 [source,xml]
