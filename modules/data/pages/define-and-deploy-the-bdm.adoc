@@ -257,64 +257,67 @@ The `version` and `groupId` of those artifacts matches the Bonita project versio
 You have the possibility to view and retrieve the `bdm-model` dependency from the BDM editor `Maven artifact properties` section. +
 Those maven artifacts are meant to be used from REST API extensions, using the following dependencies:
 
-.The generated bdm-model dependency template
+.The generated model dependency template
 [source,xml]
 ----
 <dependency>
 	<groupId>[PROJECT GROUP ID]</groupId>
 	<artifactId>[PROJECT ID]-bdm-model</artifactId>
 	<version>[PROJECT VERSION]</version>
-	<scope>provided</scope>
+	<scope>provided</scope> <1>
 </dependency>
 ----
+<1> In most use cases, when the dependent project is meant to be deployed server side (eg: Rest API Extension, Custom libraries used in process expressions...etc.) the dependency scope of the model should be `provided`. When used and packaged as a client application, `compile` scope (maven default) should be used.
+
 Contains all Business Object entities and DAO interfaces.
 Can be used as dependency of:
 
 * The main application module
 * Any Rest API Extension
-* A Java clients using the https://github.com/bonitasoft/bonita-java-client#41-bdm-typed-queries[bonita-java-client] and the Bdm typed queries
-* Integration tests, using the xref:test-toolkit::business-data.adoc#_as_a_typed_object[Bonita Test Toolkit] and the typed Business Objects.
+* A Java client application using the https://search.maven.org/search?q=g:org.bonitasoft.web%20AND%20a:bonita-java-client[bonita-java-client^] and the https://github.com/bonitasoft/bonita-java-client#41-bdm-typed-queries[Bdm typed queries^]
+* Integration tests, using the xref:test-toolkit::business-data.adoc#_as_a_typed_object[Bonita Test Toolkit^] and the typed Business Objects.
 
-.The generated bdm-dao-client dependency template
+.The generated dao-client dependency template
 [source,xml]
 ----
 <dependency>
     <groupId>[PROJECT GROUP ID]</groupId>
     <artifactId>[PROJECT ID]-bdm-dao-client</artifactId>
     <version>[PROJECT VERSION]</version>
-    <scope>provided</scope>
 </dependency>
 ----
-Contains client side implementation of the DAO.
-Can be used as dependency of a java clients using the https://search.maven.org/search?q=g:org.bonitasoft.engine%20AND%20a:bonita-client[bonita-client] and the `APIClient#getDAO` factory method.
+Contains client side implementation of the Business Objects DAO.
+Can be used as dependency of a java client application using the https://search.maven.org/search?q=g:org.bonitasoft.engine%20AND%20a:bonita-client[bonita-client^] and the https://javadoc.bonitasoft.com/api/{javadocVersion}/org/bonitasoft/engine/api/APIClient.html#getDAO(java.lang.Class)[APIClient#getDAO^] factory method.
 
 The `bdm-model` dependency is automatically added when a REST API Extension is created from the Bonita Studio. It allows to manipulate Business Objects from a REST API Extension. +
-ℹ️ Only *read operations*  can be performed on business objects from a REST API Extension, even with the dao. Write operations are done through processes.
 
 == Build and Deploy BDM artifacts
 
-It is possible to automate the build and deployment of the `*-bdm-model` and `*-bdm-dao-client` artifacts using Maven. Publishing those artifacts can have its purpose if you need to consume them in any other maven or gradle projects outside of the Bonita project.
+It is possible to automate the build and deployment of the `bdm-model` and `bdm-dao-client` artifacts using *only* Maven. Publishing those artifacts can have its purpose if you need to consume them in any other maven or gradle projects outside of a Bonita project.
 
-It is required to have https://maven.apache.org/install.html[maven properly installed] for the following instructions. 
+[CAUTION]
+It is not supported for a Bonita project to depend on `bdm-model` dependency from another Bonita project.
+
+It is required to have https://maven.apache.org/install.html[Maven^] and https://adoptium.net/temurin/releases/?version=11[Java^] installed for the following instructions. 
 
 Open a terminal at the root of the Bonita project.
 
-To install the dependencies in your local repository you can run:
+To install the artifacts in your local repository you can run:
 
 [source, shell]
 ----
 $ mvn install
 ----
 
-To publish the dependencies on a remote repository (Nexus, Artifactory, Github packages...etc) you can run:
+To publish the artifacts on a remote repository (Nexus, Artifactory, Github packages...etc) you can run:
 
 [source, shell]
 ----
 $ mvn deploy -DaltDeploymentRepository=<server_id>::<remote_repository_url>
 ----
-NOTE: Proper remote repository credentials must be configured in your maven settings (`<USER_HOME>/.m2/settings.xml`) for the given `server_id` if required.
+NOTE: Proper remote repository credentials must be configured in the https://maven.apache.org/settings.html#Servers[Maven settings^] (`<USER_HOME>/.m2/settings.xml` by default) for the given `server_id` if required.
 
-By default running those commands from the project root will build and deploy all the project submodules. You may cherry pick what submodule to deploy using:
+By default running those commands from the project root will build and deploy all the project submodules. You may cherry pick what module to deploy using:
 
 .Only publish the `*-bdm-model` artifact
 [source, shell]
@@ -328,6 +331,8 @@ $ mvn -pl bdm/model -am deploy -DaltDeploymentRepository=<server_id>::<remote_re
 ----
 $ mvn -pl bdm/dao-client -am deploy -DaltDeploymentRepository=<server_id>::<remote_repository_url> <1>
 ----
+
+NOTE: Only *read operations* can be performed on business objects from a REST API Extension, even with the DAO. Write operations are done through processes.
 
 == Export the BDM
 
