@@ -296,7 +296,7 @@ The `bdm-model` dependency is automatically added when a REST API Extension is c
 It is possible to automate the build and deployment of the `bdm-model` and `bdm-dao-client` artifacts using *only* Maven. Publishing those artifacts can have its purpose if you need to consume them in any other maven or gradle projects outside of a Bonita project.
 
 [CAUTION]
-It is not supported for a Bonita project to depend on `bdm-model` dependency from another Bonita project.
+It is not supported for a Bonita project to depend on the `bdm-model` dependency from another Bonita project.
 
 It is required to have https://maven.apache.org/install.html[Maven^] and https://adoptium.net/temurin/releases/?version=11[Java^] installed for the following instructions. 
 
