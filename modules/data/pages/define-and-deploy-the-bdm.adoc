@@ -76,7 +76,7 @@ In some processes, user interfaces or system activities might need to handle mul
 To support handling of multiple instances of a business objects:
 
 . Specify that a given business data is multiple, using a checkbox in the new business data wizard.
-. Use a `java.util.list` of objects when accessing multi-instance business data from a Groovy expression.
+. Use a `java.util.List` of objects when accessing multi-instance business data from a Groovy expression.
 . Set the list of business object instances in an operation using `takes value of` with a right operand that consists of a list of existing (possibly modified) and new business object instances.
 . Delete all instances from a list of business object instances with an `Is Deleted` operation.
 
@@ -273,7 +273,7 @@ Can be used as dependency of:
 * The main application module
 * Any Rest API Extension
 * A Java clients using the https://github.com/bonitasoft/bonita-java-client#41-bdm-typed-queries[bonita-java-client] and the Bdm typed queries
-* Integration tests, using the xref:test-toolkit:business-data.adoc#_as_a_typed_object[Bonita Test Toolkit] and the typed Business Objects.
+* Integration tests, using the xref:test-toolkit::business-data.adoc#_as_a_typed_object[Bonita Test Toolkit] and the typed Business Objects.
 
 .The generated bdm-dao-client dependency template
 [source,xml]
